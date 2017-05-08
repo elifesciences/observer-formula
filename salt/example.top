@@ -1,0 +1,11 @@
+base:
+    '*':
+        - elife
+        - elife.uwsgi
+        - elife.mercurial # remove once rfc3339 on pypi is updated
+        - elife.python3
+        - elife.java
+        - elife.nginx
+        - elife.postgresql
+        - observer
+        - observer.uwsgi
