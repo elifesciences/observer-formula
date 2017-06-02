@@ -25,7 +25,7 @@ metabase-service:
         - require:
             - file: metabase-service
 
-metabase-db-backup:
+observer-backup:
     file.managed:
         - name: /etc/ubr/observer-backup.yaml
         - source: salt://observer/config/etc-ubr-observer-backup.yaml
