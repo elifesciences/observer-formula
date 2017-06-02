@@ -29,6 +29,7 @@ metabase-db-backup:
     file.managed:
         - name: /etc/ubr/observer-backup.yaml
         - source: salt://observer/config/etc-ubr-observer-backup.yaml
+        - template: jinja
 
 nginx-proxy:
     file.absent:
@@ -73,6 +74,16 @@ observer-db:
         - db_password: {{ pillar.observer.db.password }}
         - require:
             - postgres_user: observer-db-user
+
+observer-db-perms-to-rds_superuser:
+    cmd.script:
+        - name: salt://elife/scripts/rds-perms.sh
+        - template: jinja
+        - defaults:
+            user: {{ pillar.observer.db.username }}
+            pass: {{ pillar.observer.db.password }}
+        - require:
+            - observer-db
 
 #
 # observer
