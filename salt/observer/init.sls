@@ -146,6 +146,16 @@ log-file-rotation:
         - source: salt://observer/config/etc-logrotate.d-observer.conf
         - template: jinja
 
+log-file-monitoring:
+    file.managed:
+        - name: /etc/syslog-ng/conf.d/observer.conf
+        - source: salt://observer/config/etc-syslog-ng-conf.d-observer.conf
+        - template: jinja
+        - require:
+            - log-file
+        - watch_in:
+            - service: syslog-ng
+
 configure-app:
     cmd.run:
         - user: {{ pillar.elife.deploy_user.username }}
