@@ -140,6 +140,12 @@ log-file:
         - group: {{ pillar.elife.webserver.username }}
         - mode: 660
 
+log-file-rotation:
+    file.managed:
+        - name: /etc/logrotate.d/observer.conf
+        - source: salt://observer/config/etc-logrotate.d-observer.conf
+        - template: jinja
+
 configure-app:
     cmd.run:
         - user: {{ pillar.elife.deploy_user.username }}
