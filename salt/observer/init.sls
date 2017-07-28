@@ -185,5 +185,6 @@ article-update-listener:
         - enable: True
         - require:
             - file: article-update-listener
-
+        - watch:
+            - install-observer
 
