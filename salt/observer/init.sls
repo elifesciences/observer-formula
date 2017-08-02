@@ -20,7 +20,7 @@ metabase-service:
 
     service.running:
         - name: metabase
-        - watch:
+        - onchanges:
             - file: install-metabase # restart if the version of metabase changes
         - require:
             - file: metabase-service
