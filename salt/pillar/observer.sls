@@ -2,13 +2,6 @@ observer:
     app:
         secret: not-a-real-secret-key
 
-    db:
-        name: observer
-        username: foo
-        password: bar
-        host: 127.0.0.1
-        port: 5432
-
     aws:
         # for accessing updates from event bus
         access_key_id: AKIAfdasfasdfasdfas
@@ -20,3 +13,10 @@ observer:
         port: 587
         user: null
         pass: null
+
+
+# the name of the database can be overwritten like this:
+elife:
+    db:
+        app:
+            name: observer
