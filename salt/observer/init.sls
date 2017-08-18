@@ -193,6 +193,7 @@ article-update-listener-systemd:
     file.managed:
         - name: /lib/systemd/system/article-update-listener.service
         - source: salt://observer/config/lib-systemd-system-article-update-listener.service
+        - makedirs: True
         - template: jinja
         - require:
             - configure-app
