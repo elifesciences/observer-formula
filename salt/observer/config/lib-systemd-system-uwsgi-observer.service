@@ -1,0 +1,21 @@
+[Unit]
+Description="Observer"
+After=network.target
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=observer
+
+Restart=on-failure
+Environment="LANG=en_US.UTF-8"
+
+{% if pillar.elife.newrelic.enabled %}
+Environment="NEW_RELIC_CONFIG_FILE=/srv/observer/newrelic.ini"
+ExecStart=/srv/observer/venv/bin/newrelic-admin run-program /srv/observer/venv/bin/uwsgi --enable-threads --die-on-term --ini /srv/observer/uwsgi.ini
+{% else %}
+ExecStart=/srv/observer/venv/bin/uwsgi --die-on-term --ini /srv/observer/uwsgi.ini
+{% endif %}

@@ -1,0 +1,17 @@
+[Unit]
+Description="Metabase"
+After=network.target
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+#StandardOutput=syslog # metabase is very noisy
+StandardError=syslog
+SyslogIdentifier=metabase
+
+Restart=on-failure
+WorkingDirectory=/srv/metabase
+ExecStart=/usr/bin/java -jar metabase.jar
+User=elife
+Environment="MB_JETTY_PORT=8000"
