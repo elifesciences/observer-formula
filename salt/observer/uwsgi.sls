@@ -23,19 +23,27 @@ app-uwsgi-conf:
         - require:
             - install-observer
 
-app-uwsgi:
+app-uwsgi-upstart:
     file.managed:
         - name: /etc/init/uwsgi-observer.conf
         - source: salt://observer/config/etc-init-uwsgi-observer.conf
         - template: jinja
         - mode: 755
 
+app-uwsgi-systemd:
+    file.managed:
+        - name: /lib/systemd/system/uwsgi-observer.service
+        - source: salt://observer/config/lib-systemd-system-uwsgi-observer.service
+        - template: jinja
+
+app-uwsgi:
     service.running:
         - name: uwsgi-observer
         - enable: True
         - require:
             - file: uwsgi-params
-            - file: app-uwsgi
+            - file: app-uwsgi-upstart
+            - file: app-uwsgi-systemd
             - file: app-uwsgi-conf
             - file: app-nginx-conf
             - file: log-file

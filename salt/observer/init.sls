@@ -13,17 +13,26 @@ install-metabase:
         - require:
             - file: install-metabase
 
-metabase-service:
+metabase-upstart-script:
     file.managed:
         - name: /etc/init/metabase.conf
         - source: salt://observer/config/etc-init-metabase.conf
 
+metabase-systemd-script:
+    file.managed:
+        - name: /lib/systemd/system/metabase.service
+        - source: salt://observer/config/lib-systemd-system-metabase.service
+
+metabase-service:
     service.running:
         - name: metabase
         - watch:
             - file: install-metabase # restart if the version of metabase changes
+            - file: metabase-upstart-script
+            - file: metabase-systemd-script
         - require:
-            - file: metabase-service
+            - file: metabase-upstart-script
+            - file: metabase-systemd-script
 
 observer-backup:
     file.managed:
@@ -122,7 +131,7 @@ configure-app:
 # listener
 #
 
-article-update-listener:
+article-update-listener-upstart:
     file.managed:
         - name: /etc/init/article-update-listener.conf
         - source: salt://observer/config/etc-init-article-update-listener.conf
@@ -130,11 +139,27 @@ article-update-listener:
         - require:
             - configure-app
 
+article-update-listener-systemd:
+    file.managed:
+        - name: /lib/systemd/system/article-update-listener.service
+        - source: salt://observer/config/lib-systemd-system-article-update-listener.service
+        - makedirs: True
+        - template: jinja
+        - require:
+            - configure-app
+
+article-update-listener:
+    {% if pillar.elife.env not in ['ci', 'end2end', 'prod', 'continuumtest'] %}
+    service.dead:
+    {% else %}
     service.running:
+    {% endif %}
         - name: article-update-listener
         - enable: True
         - require:
-            - file: article-update-listener
+            - file: article-update-listener-upstart
+            - file: article-update-listener-systemd
         - watch:
             - install-observer
-
+            - article-update-listener-systemd
+            - article-update-listener-upstart
