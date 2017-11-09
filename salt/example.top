@@ -7,5 +7,6 @@ base:
         - elife.java
         - elife.nginx
         - elife.postgresql
+        - elife.postgresql-appdb
         - observer
         - observer.uwsgi

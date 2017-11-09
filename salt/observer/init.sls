@@ -45,56 +45,6 @@ nginx-proxy:
         - name: /etc/nginx/sites-enabled/metabase.conf
 
 #
-# db
-#
-
-observer-db-user:
-    postgres_user.present:
-        - name: {{ pillar.observer.db.username }}
-        - encrypted: True
-        - password: {{ pillar.observer.db.password }}
-        - refresh_password: True
-
-        {% if salt['elife.cfg']('cfn.outputs.RDSHost') %}
-        # remote psql
-        - db_user: {{ salt['elife.cfg']('project.rds_username') }}        
-        - db_password: {{ salt['elife.cfg']('project.rds_password') }}
-        - db_host: {{ salt['elife.cfg']('cfn.outputs.RDSHost') }}
-        - db_port: {{ salt['elife.cfg']('cfn.outputs.RDSPort') }}
-        {% else %}
-        - db_user: {{ pillar.elife.db_root.username }}
-        - db_password: {{ pillar.elife.db_root.password }}
-        {% endif %}
-        - createdb: True
-
-observer-db:
-    postgres_database.present:
-        {% if salt['elife.cfg']('cfn.outputs.RDSHost') %}    
-        # remote psql
-        - name: {{ salt['elife.cfg']('project.rds_dbname') }}
-        - db_user: {{ salt['elife.cfg']('project.rds_username') }}
-        - db_host: {{ salt['elife.cfg']('cfn.outputs.RDSHost') }}
-        - db_port: {{ salt['elife.cfg']('cfn.outputs.RDSPort') }}
-        {% else %}
-        # local psql
-        - name: {{ pillar.observer.db.name }}
-        {% endif %}
-        - db_user: {{ pillar.observer.db.username }}
-        - db_password: {{ pillar.observer.db.password }}
-        - require:
-            - postgres_user: observer-db-user
-
-observer-db-perms-to-rds_superuser:
-    cmd.script:
-        - name: salt://elife/scripts/rds-perms.sh
-        - template: jinja
-        - defaults:
-            user: {{ pillar.observer.db.username }}
-            pass: {{ pillar.observer.db.password }}
-        - require:
-            - observer-db
-
-#
 # observer
 #    
 
@@ -175,7 +125,7 @@ configure-app:
         - require:
             - cfg-file
             - log-file
-            - observer-db
+            - psql-app-db
 
 #
 # listener
