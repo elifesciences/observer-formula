@@ -1,5 +1,7 @@
 base:
     '*':
+
+
         - elife
         - elife.uwsgi
         - elife.mercurial # remove once rfc3339 on pypi is updated
@@ -8,5 +10,6 @@ base:
         - elife.nginx
         - elife.postgresql
         - elife.postgresql-appdb
+        - elife.newrelic-python
         - observer
         - observer.uwsgi
