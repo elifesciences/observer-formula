@@ -22,6 +22,7 @@ app-uwsgi-conf:
         - template: jinja
         - require:
             - install-observer
+            - configure-app
 
 app-uwsgi-upstart:
     file.managed:
