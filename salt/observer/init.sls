@@ -128,6 +128,24 @@ configure-app:
             - psql-app-db
 
 #
+#
+#
+
+daily-metrics-import:
+    # don't scrape ejp data outside of prod/adhoc instances
+    {% if pillar.elife.env not in ['prod'] %}
+    cron.absent:
+    {% else %}
+    cron.present:
+    {% endif %}
+        - user: {{ pillar.elife.deploy_user.username }}
+        - identifier: daily-metrics-import
+        - name: cd /srv/observer/ && ./manage.sh load_from_api --target elife-metrics
+        - special: '@daily'
+        - require:
+            - configure-app
+
+#
 # listener
 #
 
