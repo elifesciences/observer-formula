@@ -9,4 +9,5 @@ base:
         - elife.postgresql
         - elife.postgresql-appdb
         - observer
+        #- observer.cron
         - observer.uwsgi
