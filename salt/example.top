@@ -12,4 +12,5 @@ base:
         - elife.postgresql-appdb
         - elife.newrelic-python
         - observer
+        #- observer.cron
         - observer.uwsgi
