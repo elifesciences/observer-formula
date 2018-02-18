@@ -17,7 +17,7 @@ WorkingDirectory=/srv/observer
 
 {% if pillar.elife.newrelic.enabled %}
 Environment="NEW_RELIC_CONFIG_FILE=/srv/observer/newrelic.ini"
-ExecStart=/srv/observer/venv/bin/newrelic-admin run-program ./manage.sh article_update_listener
+ExecStart=/srv/observer/venv/bin/newrelic-admin run-program ./manage.sh update_listener
 {% else %}
-ExecStart=/srv/observer/manage.sh article_update_listener
+ExecStart=/srv/observer/manage.sh update_listener
 {% endif %}

@@ -133,35 +133,50 @@ configure-app:
 # listener
 #
 
+# deprecated, remove once applied
+article-update-listener:
+    cmd.run:
+        - name: stop article-update-listener || true
+
+# deprecated, remove once applied
 article-update-listener-upstart:
-    file.managed:
+    file.absent:
         - name: /etc/init/article-update-listener.conf
-        - source: salt://observer/config/etc-init-article-update-listener.conf
+
+# deprecated, remove once applied
+article-update-listener-systemd:
+    file.absent:
+        - name: /lib/systemd/system/article-update-listener.service
+
+update-listener-upstart:
+    file.managed:
+        - name: /etc/init/update-listener.conf
+        - source: salt://observer/config/etc-init-update-listener.conf
         - template: jinja
         - require:
             - configure-app
 
-article-update-listener-systemd:
+update-listener-systemd:
     file.managed:
-        - name: /lib/systemd/system/article-update-listener.service
-        - source: salt://observer/config/lib-systemd-system-article-update-listener.service
+        - name: /lib/systemd/system/update-listener.service
+        - source: salt://observer/config/lib-systemd-system-update-listener.service
         - makedirs: True
         - template: jinja
         - require:
             - configure-app
 
-article-update-listener:
+update-listener:
     {% if pillar.elife.env not in ['ci', 'end2end', 'prod', 'continuumtest'] %}
     service.dead:
     {% else %}
     service.running:
     {% endif %}
-        - name: article-update-listener
+        - name: update-listener
         - enable: True
         - require:
-            - file: article-update-listener-upstart
-            - file: article-update-listener-systemd
+            - file: update-listener-upstart
+            - file: update-listener-systemd
         - watch:
             - install-observer
-            - article-update-listener-systemd
-            - article-update-listener-upstart
+            - update-listener-systemd
+            - update-listener-upstart
