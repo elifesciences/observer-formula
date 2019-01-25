@@ -3,9 +3,11 @@ install-metabase:
         - name: /srv/metabase/metabase.jar
         - makedirs: True
         #- source: http://downloads.metabase.com/v0.23.1/metabase.jar
-        - source: http://downloads.metabase.com/v0.27.2/metabase.jar
+        #- source: http://downloads.metabase.com/v0.27.2/metabase.jar
         #- source_hash: md5=79c805a6c63c4d1aae5c6afe2839e667
-        - source_hash: md5=873ece005f6f7dab505212763c266aee
+        #- source_hash: md5=873ece005f6f7dab505212763c266aee
+        - source: http://downloads.metabase.com/v0.31.2/metabase.jar
+        - source_hash: f658bccad16860601bbd4eadacaeeb86
 
         - watch_in:
             - service: nginx-server-service
