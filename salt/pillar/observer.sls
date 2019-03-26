@@ -20,3 +20,9 @@ elife:
     db:
         app:
             name: observer
+
+    # systemd/16.04+ only
+    uwsgi:
+        services:
+            observer:
+                folder: /srv/observer

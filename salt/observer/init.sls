@@ -103,6 +103,15 @@ log-file:
         - group: {{ pillar.elife.webserver.username }}
         - mode: 660
 
+vagrant-log-file:
+    file.managed:
+        - name: /srv/observer/observer.log
+        - user: {{ pillar.elife.deploy_user.username }}
+        - group: {{ pillar.elife.webserver.username }}
+        - mode: 660
+        - onlyif:
+            - test -e /vagrant
+
 log-file-rotation:
     file.managed:
         - name: /etc/logrotate.d/observer.conf

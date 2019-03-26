@@ -31,23 +31,28 @@ app-uwsgi-upstart:
         - template: jinja
         - mode: 755
 
-app-uwsgi-systemd:
-    file.managed:
-        - name: /lib/systemd/system/uwsgi-observer.service
-        - source: salt://observer/config/lib-systemd-system-uwsgi-observer.service
-        - template: jinja
+{% if salt['grains.get']('osrelease') == '14.04' %}
+uwsgi-observer.socket:
+    cmd.run:
+        - name: echo "dummy state"
+{% else %}
+uwsgi-observer.socket:
+    service.running:
+        - enable: True
+{% endif %}
 
 app-uwsgi:
     service.running:
         - name: uwsgi-observer
         - enable: True
         - require:
-            - file: uwsgi-params
-            - file: app-uwsgi-upstart
-            - file: app-uwsgi-systemd
-            - file: app-uwsgi-conf
-            - file: app-nginx-conf
-            - file: log-file
+            - uwsgi-observer.socket
+            - uwsgi-params
+            - app-uwsgi-upstart
+            - app-uwsgi-conf
+            - app-nginx-conf
+            - log-file
+            - vagrant-log-file
         - watch:
             - install-observer
             - service: nginx-server-service
