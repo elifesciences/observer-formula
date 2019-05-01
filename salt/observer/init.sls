@@ -84,6 +84,7 @@ cfg-file:
         - require:
             - install-observer
 
+# observer relies on credentials in the environment for talking to AWS
 aws-credentials:
     file.managed:
         - user: {{ pillar.elife.deploy_user.username }}
@@ -145,27 +146,9 @@ configure-app:
 #
 
 # deprecated, remove once applied
-article-update-listener:
-    cmd.run:
-        - name: stop article-update-listener || true
-
-# deprecated, remove once applied
-article-update-listener-upstart:
-    file.absent:
-        - name: /etc/init/article-update-listener.conf
-
-# deprecated, remove once applied
-article-update-listener-systemd:
-    file.absent:
-        - name: /lib/systemd/system/article-update-listener.service
-
 update-listener-upstart:
-    file.managed:
+    file.absent:
         - name: /etc/init/update-listener.conf
-        - source: salt://observer/config/etc-init-update-listener.conf
-        - template: jinja
-        - require:
-            - configure-app
 
 update-listener-systemd:
     file.managed:
@@ -185,9 +168,8 @@ update-listener:
         - name: update-listener
         - enable: True
         - require:
-            - file: update-listener-upstart
             - file: update-listener-systemd
         - watch:
             - install-observer
             - update-listener-systemd
-            - update-listener-upstart
+            - aws-credentials
