@@ -30,6 +30,7 @@ metabase-systemd-script:
 metabase-service:
     service.running:
         - name: metabase
+        - enable: True
         - watch:
             - file: install-metabase # restart if the version of metabase changes
             - file: metabase-upstart-script
