@@ -132,7 +132,7 @@ log-file-monitoring:
 
 configure-app:
     cmd.run:
-        - user: {{ pillar.elife.deploy_user.username }}
+        - runas: {{ pillar.elife.deploy_user.username }}
         - cwd: /srv/observer/
         - name: |
             ./install.sh
