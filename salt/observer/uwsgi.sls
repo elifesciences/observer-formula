@@ -24,22 +24,9 @@ app-uwsgi-conf:
             - install-observer
             - configure-app
 
-app-uwsgi-upstart:
-    file.managed:
-        - name: /etc/init/uwsgi-observer.conf
-        - source: salt://observer/config/etc-init-uwsgi-observer.conf
-        - template: jinja
-        - mode: 755
-
-{% if salt['grains.get']('osrelease') == '14.04' %}
-uwsgi-observer.socket:
-    cmd.run:
-        - name: echo "dummy state"
-{% else %}
 uwsgi-observer.socket:
     service.running:
         - enable: True
-{% endif %}
 
 app-uwsgi:
     service.running:
@@ -48,7 +35,6 @@ app-uwsgi:
         - require:
             - uwsgi-observer.socket
             - uwsgi-params
-            - app-uwsgi-upstart
             - app-uwsgi-conf
             - app-nginx-conf
             - log-file

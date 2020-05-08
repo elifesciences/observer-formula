@@ -17,11 +17,6 @@ install-metabase:
         - require:
             - file: install-metabase
 
-metabase-upstart-script:
-    file.managed:
-        - name: /etc/init/metabase.conf
-        - source: salt://observer/config/etc-init-metabase.conf
-
 metabase-systemd-script:
     file.managed:
         - name: /lib/systemd/system/metabase.service
@@ -33,10 +28,8 @@ metabase-service:
         - enable: True
         - watch:
             - file: install-metabase # restart if the version of metabase changes
-            - file: metabase-upstart-script
             - file: metabase-systemd-script
         - require:
-            - file: metabase-upstart-script
             - file: metabase-systemd-script
 
 observer-backup:
@@ -145,11 +138,6 @@ configure-app:
 #
 # listener
 #
-
-# deprecated, remove once applied
-update-listener-upstart:
-    file.absent:
-        - name: /etc/init/update-listener.conf
 
 update-listener-systemd:
     file.managed:
