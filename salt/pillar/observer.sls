@@ -1,6 +1,7 @@
 observer:
     app:
         secret: not-a-real-secret-key
+        feedly-ga-measurement-id: null
 
     aws:
         # for accessing updates from event bus
