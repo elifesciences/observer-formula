@@ -1,1 +1,1 @@
-elifeFormula('observer', '', null, ['snsalt'])
+elifeFormula('observer')
