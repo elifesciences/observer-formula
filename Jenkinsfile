@@ -1,1 +1,1 @@
-elifeFormula('observer', '', null, ['s2004'])
+elifeFormula('observer')
