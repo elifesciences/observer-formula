@@ -20,6 +20,17 @@ metabase-systemd-script:
         - name: /lib/systemd/system/metabase.service
         - source: salt://observer/config/lib-systemd-system-metabase.service
 
+{% if True %}
+
+metabase-service:
+    service.dead:
+        - name: metabase
+        - enable: False
+        - require:
+            - file: metabase-systemd-script
+
+{% else %}
+
 metabase-service:
     service.running:
         - name: metabase
@@ -29,6 +40,8 @@ metabase-service:
             - file: metabase-systemd-script
         - require:
             - file: metabase-systemd-script
+
+{% endif %}
 
 observer-backup:
     file.managed:
