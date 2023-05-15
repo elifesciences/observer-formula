@@ -1,50 +1,16 @@
-install-metabase:
-    file.managed:
-        - name: /srv/metabase/metabase.jar
-        - makedirs: True
-        #- source: http://downloads.metabase.com/v0.23.1/metabase.jar
-        #- source: http://downloads.metabase.com/v0.27.2/metabase.jar
-        #- source_hash: md5=79c805a6c63c4d1aae5c6afe2839e667
-        #- source_hash: md5=873ece005f6f7dab505212763c266aee
-        - source: http://downloads.metabase.com/v0.31.2/metabase.jar
-        - source_hash: f658bccad16860601bbd4eadacaeeb86
-
-        - watch_in:
-            - service: nginx-server-service
-
+# lsh@2022-09-27: temporary state, remove highstate run in all envs.
+metabase-cleanup:
     cmd.run:
-        - name: chown -R {{ pillar.elife.deploy_user.username }} /srv/metabase/
-        - require:
-            - file: install-metabase
-
-metabase-systemd-script:
-    file.managed:
-        - name: /lib/systemd/system/metabase.service
-        - source: salt://observer/config/lib-systemd-system-metabase.service
-
-metabase-service:
-    service.running:
-        - name: metabase
-        - enable: True
-        - watch:
-            - file: install-metabase # restart if the version of metabase changes
-            - file: metabase-systemd-script
-        - require:
-            - file: metabase-systemd-script
+        - name: |
+            rm -f /lib/systemd/system/metabase.service
+            rm -rf /srv/metabase
+            rm -f /var/log/nginx/metabase*
 
 observer-backup:
     file.managed:
         - name: /etc/ubr/observer-backup.yaml
         - source: salt://observer/config/etc-ubr-observer-backup.yaml
         - template: jinja
-
-nginx-proxy:
-    file.absent:
-        - name: /etc/nginx/sites-enabled/metabase.conf
-
-#
-# observer
-#    
 
 install-observer:
     builder.git_latest:

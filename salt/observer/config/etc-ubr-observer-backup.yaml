@@ -1,5 +1,3 @@
 postgresql-database:
     - {{ salt['elife.cfg']('project.rds_dbname') or pillar.elife.db.app.name }}
 
-tar-gzipped:
-    - /srv/metabase/**
