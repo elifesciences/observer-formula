@@ -14,10 +14,4 @@ Restart=on-failure
 Environment="LANG=en_US.UTF-8"
 User={{ pillar.elife.deploy_user.username }}
 WorkingDirectory=/srv/observer
-
-{% if pillar.elife.newrelic.enabled %}
-Environment="NEW_RELIC_CONFIG_FILE=/srv/observer/newrelic.ini"
-ExecStart=/srv/observer/venv/bin/newrelic-admin run-program /srv/observer/venv/bin/python src/manage.py update_listener
-{% else %}
 ExecStart=/srv/observer/venv/bin/python src/manage.py update_listener
-{% endif %}
