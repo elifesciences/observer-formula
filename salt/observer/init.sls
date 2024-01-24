@@ -1,10 +1,3 @@
-# lsh@2022-09-27: temporary state, remove highstate run in all envs.
-metabase-cleanup:
-    cmd.run:
-        - name: |
-            rm -f /lib/systemd/system/metabase.service
-            rm -rf /srv/metabase
-            rm -f /var/log/nginx/metabase*
 
 observer-backup:
     file.managed:

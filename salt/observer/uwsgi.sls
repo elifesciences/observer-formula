@@ -1,4 +1,18 @@
-app-nginx-conf:
+{% if pillar.elife.webserver.app == "caddy" %}
+
+app-vhost:
+    file.managed:
+        - name: /etc/caddy/sites.d/observer
+        - template: jinja
+        - source: salt://observer/config/etc-caddy-sites.d-observer
+        - require:
+            - caddy-config
+        - require_in:
+            - cmd: caddy-validate-config
+
+{% else %}
+
+app-vhost:
     file.managed:
         - name: /etc/nginx/sites-enabled/observer.conf
         - template: jinja
@@ -9,11 +23,7 @@ app-nginx-conf:
             - cmd: web-ssl-enabled
 {% endif %}
 
-# we used to redirect all traffic to https but don't anymore
-# now we simply block all external traffic on port 80
-remove-unencrypted-redirect:
-    file.absent:
-        - name: /etc/nginx/sites-enabled/unencrypted-redirect.conf
+{% endif %}
 
 app-uwsgi-conf:
     file.managed:
@@ -36,7 +46,7 @@ app-uwsgi:
             - uwsgi-observer.socket
             - uwsgi-params
             - app-uwsgi-conf
-            - app-nginx-conf
+            - app-vhost
             - log-file
             - vagrant-log-file
         - watch:
