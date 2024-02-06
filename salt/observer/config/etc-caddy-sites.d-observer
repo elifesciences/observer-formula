@@ -6,8 +6,10 @@
         }
     }
 
-    handle /static {
-        file_server /srv/observer/collected-static/*
+    handle_path /static/* {
+        file_server {
+            root /srv/observer/collected-static/
+        }
     }
 
     handle {
@@ -19,8 +21,6 @@
             }
         }
     }
-
-
 }
 
 :80 {
