@@ -30,3 +30,4 @@ elife:
         services:
             observer:
                 folder: /srv/observer
+                protocol: http-socket
