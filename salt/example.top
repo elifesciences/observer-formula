@@ -3,10 +3,11 @@ base:
         - elife
         - elife.uwsgi
         - elife.java8
-        - elife.nginx
-        - elife.postgresql-12
+        #- elife.nginx
+        - elife.disable-nginx
+        - elife.caddy
+        - elife.postgresql-13
         - elife.postgresql-appdb
-        - elife.newrelic-python
         - observer
         #- observer.cron
         - observer.uwsgi

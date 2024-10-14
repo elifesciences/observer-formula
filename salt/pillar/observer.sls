@@ -18,6 +18,9 @@ observer:
 
 # the name of the database can be overwritten like this:
 elife:
+    webserver:
+        app: caddy
+
     db:
         app:
             name: observer
@@ -27,3 +30,4 @@ elife:
         services:
             observer:
                 folder: /srv/observer
+                protocol: http-socket
