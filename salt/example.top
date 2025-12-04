@@ -6,7 +6,6 @@ base:
         #- elife.nginx
         - elife.disable-nginx
         - elife.caddy
-        - elife.caddy-next
         - elife.postgresql-13
         - elife.postgresql-appdb
         - observer
