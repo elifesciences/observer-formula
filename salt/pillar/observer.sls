@@ -1,5 +1,5 @@
 observer:
-    api-url: api.prod.elifesciences.org
+    api_url: api.prod.elifesciences.org
     app:
         secret: not-a-real-secret-key
         feedly-ga-measurement-id: null
