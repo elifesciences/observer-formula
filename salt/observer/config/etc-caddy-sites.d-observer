@@ -25,11 +25,13 @@
 
 :80 {
     import config
+    import ../snippets/cve_2025_64459_mitigation
 }
 
 {% if salt['elife.cfg']('cfn.outputs.DomainName') -%}
 :443 {
     import ../snippets/certs
     import config
+    import ../snippets/cve_2025_64459_mitigation
 }
 {% endif %}
